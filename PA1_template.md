@@ -97,13 +97,13 @@ Let's calculate the totals:
 
 
 ```r
-totalstepsperday <- tapply(activitydata$steps, activitydata$date, sum)
+totalstepsperday <- tapply(activitydata$steps, activitydata$date, sum, na.rm=TRUE)
 summary(totalstepsperday)
 ```
 
 ```
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
-##      41    8841   10765   10766   13294   21194       8
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##       0    6778   10395    9354   12811   21194
 ```
 
 ```r
@@ -111,7 +111,7 @@ str(totalstepsperday)
 ```
 
 ```
-##  int [1:61(1d)] NA 126 11352 12116 13294 15420 11015 NA 12811 9900 ...
+##  int [1:61(1d)] 0 126 11352 12116 13294 15420 11015 0 12811 9900 ...
 ##  - attr(*, "dimnames")=List of 1
 ##   ..$ : chr [1:61] "2012-10-01" "2012-10-02" "2012-10-03" "2012-10-04" ...
 ```
@@ -132,7 +132,7 @@ mdn
 ```
 
 ```
-## [1] 10765
+## [1] 10395
 ```
 
 ```r
@@ -142,7 +142,7 @@ mn
 ```
 
 ```
-## [1] 10766.19
+## [1] 9354.23
 ```
 
 ```r
@@ -166,8 +166,6 @@ legend(x= "topright", c("frequency", paste("median = ",format(round(mdn,digits=1
 ```
 
 ![](PA1_template_files/figure-html/histogram.total.number.of.steps.taken.per.day-1.png)<!-- -->
-
-We note that median and mean are very similar in this case so the lines overlap in the graph.
 
 
 ## What is the average daily activity pattern?
@@ -305,7 +303,7 @@ Making a new histogram from the data without missing values is the same process 
 
 
 ```r
-fulltotalstepsperday <- tapply(fulldata$steps,fulldata$date,sum)
+fulltotalstepsperday <- tapply(fulldata$steps,fulldata$date,sum, na.rm=TRUE)
 summary(fulltotalstepsperday)
 ```
 
@@ -372,13 +370,11 @@ legend(x= "topright", c("frequency", paste("median = ", format(round(fullmdn,dig
 
 The difference in the median and mean is:
 
-Median: Old value: 10765.0. New value: 10641.0. Difference: -124.0.
+Median: Old value: 10395.0. New value: 10641.0. Difference: 246.0.
 
-Mean: Old value: 10766.2. New value: 10749.8. Difference: -16.4.
+Mean: Old value: 9354.2. New value: 10749.8. Difference: 1395.5.
 
-We notice both the values have gone down, even if we have added more values to replace the missing values. 
-
-This is probably due to our choice to add the truncated mean of the steps for each interval - so the days that previously had no values, now have values that are a bit lower than the averages of the same intervals in the other days. 
+We notice both the values have gone up. 
 
 We can analyse a bit more where is the missing data in our dataset.
 
